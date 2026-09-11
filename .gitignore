@@ -1,0 +1,32 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Databases / local data
+*.db
+*.sqlite
+*.sqlite3
+.data/
+
+# Testing
+test-results/
+playwright-report/
+coverage/
+
+# Build/cache
+*.tsbuildinfo
+
+# Editor / macOS
+.vscode/
+.DS_Store
+
+# Vercel
+.vercel/

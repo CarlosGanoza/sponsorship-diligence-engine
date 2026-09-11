@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --background: 213 27% 98%;
+  --panel: 0 0% 100%;
+  --foreground: 216 31% 13%;
+  --muted: 215 16% 42%;
+  --border: 215 18% 88%;
+  --accent: 151 17% 36%;
+  --gold: 39 50% 46%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(217, 230, 222, 0.5), transparent 38%),
+    radial-gradient(circle at right bottom, rgba(245, 235, 205, 0.6), transparent 24%),
+    hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+::selection {
+  background: rgba(79, 109, 95, 0.18);
+}
+
+.app-panel {
+  @apply rounded-3xl border border-white/70 bg-white/90 shadow-panel backdrop-blur;
+}
+
+.data-grid {
+  background-image:
+    linear-gradient(to right, rgba(24, 32, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(24, 32, 42, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.print-frame {
+  @apply rounded-[2rem] border border-ink-200 bg-white shadow-panel;
+}
+
+.print-avoid-break {
+  break-inside: avoid;
+}
+
+@media print {
+  body {
+    background: white !important;
+  }
+
+  .print-hidden {
+    display: none !important;
+  }
+
+  .print-frame {
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .app-panel {
+    border: none !important;
+    box-shadow: none !important;
+    background: white !important;
+  }
+
+  .print-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

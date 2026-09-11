@@ -1,0 +1,1476 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  OPERATOR
+  SPONSOR
+  CANDIDATE
+}
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum WorkspaceInviteStatus {
+  ACTIVE
+  ACCEPTED
+  REVOKED
+  EXPIRED
+}
+
+enum PasswordResetTokenStatus {
+  ACTIVE
+  USED
+  REVOKED
+  EXPIRED
+}
+
+enum CandidateStage {
+  INTAKE
+  REVIEW
+  MEMO_READY
+  SPONSOR_OUTREACH
+  HOLD
+}
+
+enum AutomationMode {
+  AUTOMATED
+  MANUAL_OVERRIDE
+}
+
+enum ArtifactType {
+  RESUME
+  PROJECT_SUMMARY
+  MENTOR_NOTE
+  RECOMMENDATION
+  REFLECTION
+  PORTFOLIO_LINK
+  OTHER
+}
+
+enum SignalCategory {
+  INITIATIVE
+  FOLLOW_THROUGH
+  LEADERSHIP
+  ADAPTABILITY
+  COMMUNICATION
+  ANALYTICAL_THINKING
+  COLLABORATION
+  RESILIENCE
+  MISSION_ALIGNMENT
+}
+
+enum EntityType {
+  CANDIDATE
+  MENTOR
+  OPERATOR
+  SPONSOR
+}
+
+enum EdgeType {
+  WORKED_WITH
+  MENTORED_BY
+  REFERRED_BY
+  ALUMNI_CONNECTION
+  OPERATOR_KNOWS
+  EVENT_CONNECTION
+}
+
+enum SeniorityLevel {
+  DIRECTOR
+  VP
+  C_SUITE
+  FOUNDER
+  PARTNER
+  EXECUTIVE
+}
+
+enum SponsorStyle {
+  HANDS_ON
+  SELECTIVE_DOOR_OPENER
+  SYSTEMS_BUILDER
+  PUBLIC_ADVOCATE
+  QUIET_CONNECTOR
+}
+
+enum SponsorAvailabilityStatus {
+  OPEN
+  LIMITED
+  PAUSED
+}
+
+enum MemoStatus {
+  NOT_STARTED
+  PROCESSING
+  READY
+  NEEDS_REVIEW
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  FLAGGED
+}
+
+enum RecommendationType {
+  BEST_SPONSOR
+  OPPORTUNITY_TYPE
+  NEXT_ACTION
+  WARM_PATH
+}
+
+enum OpportunityType {
+  STRETCH_ROLE
+  REGIONAL_SCALE_INTRO
+  PILOT_PARTNERSHIP
+  PUBLIC_ADVOCACY
+  BOARD_OBSERVER
+  SYSTEMS_RESIDENCY
+  TRUSTED_INTRO
+}
+
+enum BriefStatus {
+  DRAFT
+  READY
+  HOLD
+}
+
+enum CrmSyncMode {
+  MOCK
+  WEBHOOK
+  HUBSPOT
+  SALESFORCE
+  AIRTABLE
+}
+
+enum CrmSyncStatus {
+  SYNCED
+  FAILED
+  FALLBACK
+}
+
+enum EmailSendMode {
+  MOCK
+  WEBHOOK
+  GMAIL
+  OUTLOOK
+}
+
+enum EmailDeliveryStatus {
+  SENT
+  FAILED
+  FALLBACK
+}
+
+enum OutboundEmailEventType {
+  SENT
+  DELIVERY_CONFIRMED
+  REPLY_RECEIVED
+  FOLLOW_UP_SCHEDULED
+  FOLLOW_UP_SENT
+  MANUAL_NOTE
+}
+
+enum AuditLogTargetType {
+  CANDIDATE
+  SPONSOR
+  OUTBOUND_EMAIL
+  OUTBOUND_APPROVAL
+  CRM_SYNC
+  STAGE
+  EXPORT
+  SETTINGS
+}
+
+enum StorageProvider {
+  LOCAL_FS
+}
+
+enum StoredFilePurpose {
+  ARTIFACT_UPLOAD
+  CANDIDATE_UPDATE_UPLOAD
+  SECURE_CANDIDATE_UPDATE
+}
+
+enum BackgroundJobType {
+  EXTRACT_EVIDENCE
+  GENERATE_MEMO
+  GENERATE_RECOMMENDATIONS
+  GENERATE_BRIEFS
+  SEND_ALERT_DIGEST
+  SYNC_CRM_HANDOFF
+}
+
+enum BackgroundJobStatus {
+  PENDING
+  RUNNING
+  SUCCEEDED
+  FAILED
+  RETRYABLE
+  CANCELED
+}
+
+enum SponsorActivityType {
+  INTRO_REQUESTED
+  INTRO_CONFIRMED
+  SPONSOR_CONTACTED
+  MEETING_SCHEDULED
+  FOLLOW_UP_SENT
+  OUTCOME_RECORDED
+  CRM_SYNCED
+}
+
+enum SponsorActivityStatus {
+  PENDING
+  COMPLETED
+  BLOCKED
+}
+
+enum SponsorOutcomeVerdict {
+  POSITIVE
+  NEGATIVE
+  MIXED
+}
+
+enum SponsorOutcomeType {
+  ADVOCACY_COMMITTED
+  INTRO_COMPLETED
+  OPPORTUNITY_SECURED
+  FOLLOW_ON_SUPPORT
+  TIMING_MISMATCH
+  DECLINED
+  NO_MOVEMENT
+  NEEDS_MORE_PROOF
+}
+
+enum OperatorAlertType {
+  STAGE_CHANGED
+  MOMENTUM_SURGE
+  TRAJECTORY_STALLED
+  OUTREACH_READY
+  REVIEW_BLOCKER
+  MANUAL_OVERRIDE
+}
+
+enum AlertSeverity {
+  INFO
+  ACTION
+  CAUTION
+}
+
+enum AlertStatus {
+  OPEN
+  RESOLVED
+}
+
+enum StageEventType {
+  AUTOMATION_CHANGE
+  MANUAL_OVERRIDE
+  AUTOMATION_RESUMED
+}
+
+enum NotificationChannel {
+  EMAIL_DIGEST
+  SLACK_DIGEST
+  OPS_QUEUE
+}
+
+enum DeliveryStatus {
+  SENT
+  SKIPPED
+  FAILED
+}
+
+enum NoteType {
+  GENERAL
+  REVIEW
+  OUTREACH
+  RISK
+  FOLLOW_UP
+}
+
+enum DecisionType {
+  ADVANCE
+  HOLD
+  NEED_MORE_PROOF
+  DO_NOT_ADVANCE
+  OUTREACH_APPROVED
+  OUTREACH_PAUSED
+}
+
+enum UnderwritingDecision {
+  ADVANCE
+  HOLD
+  DO_NOT_ADVANCE
+}
+
+enum DisagreementDirection {
+  HUMAN_MORE_OPTIMISTIC
+  SYSTEM_MORE_OPTIMISTIC
+}
+
+enum DisagreementReviewStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  ESCALATED
+}
+
+enum DisagreementResolutionType {
+  FOLLOW_SYSTEM
+  UPHOLD_HUMAN
+  REQUEST_MORE_PROOF
+  SECOND_REVIEW
+}
+
+enum SponsorPipelineStage {
+  RECOMMENDED
+  UNDER_REVIEW
+  BRIEF_READY
+  OUTREACH_DRAFTED
+  CONTACTED
+  INTRO_REQUESTED
+  INTRO_CONFIRMED
+  MEETING_SCHEDULED
+  ADVOCATING
+  PASSED
+  CLOSED
+}
+
+enum TaskStatus {
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  BLOCKED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ProofRequestType {
+  MISSING_PROOF
+  CONTRADICTION_REVIEW
+  THIRD_PARTY_CORROBORATION
+  QUANTIFIED_OUTCOME
+  OWNERSHIP_EXAMPLE
+  OUTCOME_CLARIFICATION
+}
+
+enum ProofRequestStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CANCELED
+}
+
+enum OutboundApprovalType {
+  OUTREACH_RELEASE
+  CRM_HANDOFF
+}
+
+enum OutboundApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum CommitteeReviewStatus {
+  OPEN
+  VOTING
+  FINALIZED
+}
+
+enum CommitteeVoteDecision {
+  ADVANCE
+  HOLD
+  DO_NOT_ADVANCE
+  REQUEST_MORE_PROOF
+}
+
+enum CandidateUpdateStatus {
+  SUBMITTED
+  NEEDS_FOLLOW_UP
+  INCORPORATED
+}
+
+enum CandidateUpdateAccessLinkStatus {
+  ACTIVE
+  REVOKED
+}
+
+enum ReviewShareLinkType {
+  MEMO
+  PACKET
+}
+
+enum PilotReviewShareLinkType {
+  REPORT
+  PACK
+  COMMERCIAL
+  ONBOARDING
+  ROI
+}
+
+enum ReviewShareLinkStatus {
+  ACTIVE
+  REVOKED
+}
+
+enum SavedViewPage {
+  CANDIDATES
+  TASKS
+  PIPELINE
+  ALERTS
+}
+
+enum PilotMetricSnapshotType {
+  BASELINE
+  CHECKPOINT
+}
+
+model User {
+  id             String                 @id @default(cuid())
+  name           String
+  email          String                 @unique
+  role           UserRole               @default(OPERATOR)
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+  memberships    OrganizationMembership[]
+  sessions       AppSession[]
+  assignedAlerts OperatorAlert[]        @relation("AssignedAlerts")
+  resolvedAlerts OperatorAlert[]        @relation("ResolvedAlerts")
+  candidateNotesAuthored CandidateNote[] @relation("CandidateNoteAuthor")
+  candidateDecisions CandidateDecision[] @relation("CandidateDecisionAuthor")
+  assignedDisagreementReviews DisagreementReview[] @relation("AssignedDisagreementReviews")
+  reviewedDisagreementReviews DisagreementReview[] @relation("ReviewedDisagreementReviews")
+  requestedProofRequests ProofRequest[]  @relation("RequestedProofRequests")
+  assignedProofRequests  ProofRequest[]  @relation("AssignedProofRequests")
+  resolvedProofRequests  ProofRequest[]  @relation("ResolvedProofRequests")
+  ownedTasks     OperatorTask[]         @relation("TaskOwner")
+  ownedPipelineItems SponsorPipelineItem[] @relation("PipelineOwner")
+  requestedOutboundApprovals OutboundApproval[] @relation("RequestedOutboundApprovals")
+  reviewedOutboundApprovals OutboundApproval[] @relation("ReviewedOutboundApprovals")
+  createdCommitteeReviews CommitteeReview[] @relation("CreatedCommitteeReviews")
+  chairedCommitteeReviews CommitteeReview[] @relation("ChairedCommitteeReviews")
+  committeeReviewVotes CommitteeReviewVote[]
+  submittedCandidateUpdates CandidateUpdate[] @relation("SubmittedCandidateUpdates")
+  incorporatedCandidateUpdates CandidateUpdate[] @relation("IncorporatedCandidateUpdates")
+  createdSavedViews SavedView[] @relation("CreatedSavedViews")
+  createdCandidateUpdateAccessLinks CandidateUpdateAccessLink[] @relation("CreatedCandidateUpdateAccessLinks")
+  createdReviewShareLinks ReviewShareLink[] @relation("CreatedReviewShareLinks")
+  createdPilotReviewShareLinks PilotReviewShareLink[] @relation("CreatedPilotReviewShareLinks")
+  capturedPilotMetricSnapshots PilotMetricSnapshot[] @relation("CapturedPilotMetricSnapshots")
+  recordedSponsorOutcomes SponsorOutcome[] @relation("RecordedSponsorOutcomes")
+  requestedOutboundEmails OutboundEmail[] @relation("RequestedOutboundEmails")
+  outboundEmailEvents OutboundEmailEvent[] @relation("OutboundEmailEventActor")
+  uploadedStoredFiles StoredFile[] @relation("UploadedStoredFiles")
+  requestedBackgroundJobs BackgroundJob[] @relation("RequestedBackgroundJobs")
+  auditLogs AuditLog[] @relation("AuditLogActor")
+  passwordCredential UserPasswordCredential?
+  createdWorkspaceInvites WorkspaceInvite[] @relation("CreatedWorkspaceInvites")
+  acceptedWorkspaceInvites WorkspaceInvite[] @relation("AcceptedWorkspaceInvites")
+  passwordResetTokens PasswordResetToken[]
+}
+
+model Organization {
+  id               String                 @id @default(cuid())
+  name             String
+  slug             String                 @unique
+  description      String?
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  memberships      OrganizationMembership[]
+  sessions         AppSession[]
+  candidates       Candidate[]
+  sponsors         Sponsor[]
+  relationshipEdges RelationshipEdge[]
+  operatorTasks    OperatorTask[]
+  savedViews       SavedView[]
+  pilotMetricSnapshots PilotMetricSnapshot[]
+  sponsorOutcomes SponsorOutcome[]
+  storedFiles      StoredFile[]
+  backgroundJobs   BackgroundJob[]
+  auditLogs        AuditLog[]
+  reviewShareLinks ReviewShareLink[]
+  pilotReviewShareLinks PilotReviewShareLink[]
+  workspaceInvites WorkspaceInvite[]
+}
+
+model OrganizationMembership {
+  id             String         @id @default(cuid())
+  organizationId String
+  userId         String
+  membershipRole MembershipRole @default(MEMBER)
+  title          String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, userId])
+  @@index([organizationId])
+  @@index([userId])
+}
+
+model AppSession {
+  id             String       @id @default(cuid())
+  sessionToken   String       @unique
+  userId         String
+  organizationId String
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([expiresAt])
+}
+
+model UserPasswordCredential {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  passwordHash   String
+  mustRotate     Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+}
+
+model WorkspaceInvite {
+  id             String                @id @default(cuid())
+  organizationId String
+  email          String
+  inviteeName    String
+  membershipRole MembershipRole        @default(MEMBER)
+  title          String?
+  token          String                @unique
+  status         WorkspaceInviteStatus @default(ACTIVE)
+  expiresAt      DateTime
+  createdById    String?
+  acceptedUserId String?
+  acceptedAt     DateTime?
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  organization   Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy      User?                 @relation("CreatedWorkspaceInvites", fields: [createdById], references: [id], onDelete: SetNull)
+  acceptedUser   User?                 @relation("AcceptedWorkspaceInvites", fields: [acceptedUserId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([email])
+  @@index([status])
+  @@index([expiresAt])
+}
+
+model PasswordResetToken {
+  id        String                   @id @default(cuid())
+  userId    String
+  token     String                   @unique
+  status    PasswordResetTokenStatus @default(ACTIVE)
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime                 @default(now())
+  updatedAt DateTime                 @updatedAt
+  user      User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([expiresAt])
+}
+
+model Candidate {
+  id                    String           @id @default(cuid())
+  organizationId        String
+  fullName              String
+  headline              String
+  bio                   String
+  region                String
+  currentStage          CandidateStage   @default(INTAKE)
+  automationMode        AutomationMode   @default(AUTOMATED)
+  automationNote        String?
+  automationUpdatedAt   DateTime?
+  sponsorReadinessScore Int              @default(0)
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+  artifacts             Artifact[]
+  evidenceClaims        EvidenceClaim[]
+  sponsorMemo           SponsorMemo?
+  recommendations       Recommendation[]
+  opportunityBriefs     OpportunityBrief[]
+  crmSyncRecords        CrmSyncRecord[]
+  sponsorActivities     SponsorActivity[]
+  sponsorOutcomes       SponsorOutcome[]
+  progressSnapshots     CandidateProgressSnapshot[]
+  operatorAlerts        OperatorAlert[]
+  stageEvents           CandidateStageEvent[]
+  candidateNotes        CandidateNote[]
+  candidateDecisions    CandidateDecision[]
+  disagreementReviews   DisagreementReview[]
+  proofRequests         ProofRequest[]
+  outboundApprovals     OutboundApproval[]
+  committeeReviews      CommitteeReview[]
+  outboundEmails        OutboundEmail[]
+  operatorTasks         OperatorTask[]
+  sponsorPipelineItems  SponsorPipelineItem[]
+  candidateUpdates      CandidateUpdate[]
+  candidateUpdateAccessLinks CandidateUpdateAccessLink[]
+  reviewShareLinks      ReviewShareLink[]
+  storedFiles           StoredFile[]
+  backgroundJobs        BackgroundJob[]
+  auditLogs             AuditLog[]
+  organization          Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([currentStage])
+  @@index([sponsorReadinessScore])
+}
+
+model CandidateProgressSnapshot {
+  id                   String         @id @default(cuid())
+  candidateId          String
+  label                String
+  summary              String
+  stage                CandidateStage
+  readinessScore       Int
+  topSponsorMatchScore Int            @default(0)
+  artifactCount        Int            @default(0)
+  evidenceClaimCount   Int            @default(0)
+  highSignalClaimCount Int            @default(0)
+  approvedItemCount    Int            @default(0)
+  flaggedItemCount     Int            @default(0)
+  relationshipEdgeCount Int           @default(0)
+  memoStatus           MemoStatus?
+  capturedAt           DateTime       @default(now())
+  createdAt            DateTime       @default(now())
+  candidate            Candidate      @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@index([candidateId, capturedAt])
+  @@index([capturedAt])
+}
+
+model Artifact {
+  id             String          @id @default(cuid())
+  candidateId    String
+  storedFileId   String?         @unique
+  supersedesArtifactId String?
+  artifactType   ArtifactType
+  title          String
+  rawText        String
+  sourceLabel    String
+  fileName       String?
+  versionNumber  Int             @default(1)
+  isCurrentVersion Boolean       @default(true)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  candidate      Candidate       @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  storedFile     StoredFile?     @relation(fields: [storedFileId], references: [id], onDelete: SetNull)
+  supersedesArtifact Artifact?   @relation("ArtifactVersionChain", fields: [supersedesArtifactId], references: [id], onDelete: SetNull)
+  replacementArtifacts Artifact[] @relation("ArtifactVersionChain")
+  evidenceClaims EvidenceClaim[]
+  candidateUpdate CandidateUpdate?
+
+  @@index([candidateId])
+  @@index([artifactType])
+  @@index([candidateId, isCurrentVersion])
+  @@index([supersedesArtifactId])
+}
+
+model EvidenceClaim {
+  id                String         @id @default(cuid())
+  candidateId       String
+  artifactId        String
+  category          SignalCategory
+  claim             String
+  confidence        Float
+  supportingExcerpt String
+  tags              String         @default("")
+  reviewStatus      ReviewStatus   @default(PENDING)
+  reviewNote        String?
+  reviewedAt        DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  candidate         Candidate      @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  artifact          Artifact       @relation(fields: [artifactId], references: [id], onDelete: Cascade)
+
+  @@index([candidateId])
+  @@index([artifactId])
+  @@index([category])
+}
+
+model Sponsor {
+  id                 String           @id @default(cuid())
+  organizationId     String
+  fullName           String
+  title              String
+  organization       String
+  domainExpertise    String
+  seniorityLevel     SeniorityLevel
+  sponsorStyle       SponsorStyle
+  availabilityStatus SponsorAvailabilityStatus @default(OPEN)
+  maxConcurrentPaths Int              @default(4)
+  availabilityNote   String?
+  blackoutUntil      DateTime?
+  blackoutReason     String?
+  interestTags       String
+  geography          String
+  warmIntroAvailable Boolean          @default(false)
+  bio                String
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  recommendations    Recommendation[]
+  opportunityBriefs  OpportunityBrief[]
+  crmSyncRecords     CrmSyncRecord[]
+  sponsorActivities  SponsorActivity[]
+  sponsorOutcomes    SponsorOutcome[]
+  outboundApprovals  OutboundApproval[]
+  outboundEmails     OutboundEmail[]
+  operatorTasks      OperatorTask[]
+  sponsorPipelineItems SponsorPipelineItem[]
+  auditLogs          AuditLog[]
+  reviewShareLinks   ReviewShareLink[]
+  workspace          Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([organization])
+  @@index([geography])
+}
+
+model RelationshipEdge {
+  id             String     @id @default(cuid())
+  organizationId String
+  fromEntityType EntityType
+  fromEntityId   String
+  toEntityType   EntityType
+  toEntityId     String
+  edgeType       EdgeType
+  strength       Int
+  notes          String
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([fromEntityType, fromEntityId])
+  @@index([toEntityType, toEntityId])
+  @@index([edgeType])
+}
+
+model SponsorMemo {
+  id                String     @id @default(cuid())
+  candidateId       String     @unique
+  summary           String
+  rationale         String
+  strengths         String
+  risks             String
+  recommendedAction String
+  memoMarkdown      String
+  status            MemoStatus @default(NOT_STARTED)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  candidate         Candidate  @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+}
+
+model Recommendation {
+  id                 String             @id @default(cuid())
+  candidateId        String
+  sponsorId          String?
+  recommendationType RecommendationType
+  score              Float
+  explanation        String
+  actionSuggestion   String
+  reviewStatus       ReviewStatus       @default(PENDING)
+  reviewNote         String?
+  reviewedAt         DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  candidate          Candidate          @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  sponsor            Sponsor?           @relation(fields: [sponsorId], references: [id], onDelete: SetNull)
+  sponsorPipelineItems SponsorPipelineItem[]
+
+  @@index([candidateId])
+  @@index([sponsorId])
+  @@index([recommendationType])
+}
+
+model OpportunityBrief {
+  id                String          @id @default(cuid())
+  candidateId       String
+  sponsorId         String
+  opportunityType   OpportunityType
+  status            BriefStatus     @default(READY)
+  title             String
+  summary           String
+  whyNow            String
+  sponsorAsk        String
+  talkingPoints     String
+  proofToBring      String
+  successIndicators String
+  briefMarkdown     String
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  candidate         Candidate       @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  sponsor           Sponsor         @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
+  crmSyncRecords    CrmSyncRecord[]
+  sponsorActivities SponsorActivity[]
+  outboundApprovals OutboundApproval[]
+  outboundEmails    OutboundEmail[]
+  sponsorPipelineItems SponsorPipelineItem[]
+
+  @@unique([candidateId, sponsorId, opportunityType])
+  @@index([candidateId])
+  @@index([sponsorId])
+  @@index([status])
+}
+
+model CrmSyncRecord {
+  id                String        @id @default(cuid())
+  candidateId       String
+  sponsorId         String
+  opportunityBriefId String?
+  objectType        String        @default("opportunity_brief")
+  providerMode      CrmSyncMode
+  status            CrmSyncStatus
+  externalRecordId  String?
+  payloadJson       String
+  syncNote          String
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  syncedAt          DateTime?
+  candidate         Candidate     @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  sponsor           Sponsor       @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
+  opportunityBrief  OpportunityBrief? @relation(fields: [opportunityBriefId], references: [id], onDelete: SetNull)
+
+  @@index([candidateId])
+  @@index([sponsorId])
+  @@index([status])
+  @@index([providerMode])
+  @@index([objectType, providerMode, status])
+}
+
+model StoredFile {
+  id               String            @id @default(cuid())
+  organizationId   String
+  candidateId      String?
+  uploadedById     String?
+  purpose          StoredFilePurpose
+  provider         StorageProvider   @default(LOCAL_FS)
+  originalFileName String
+  mimeType         String
+  byteSize         Int
+  checksum         String
+  storagePath      String
+  fileExtension    String?
+  sourceLabel      String
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  organization     Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  candidate        Candidate?        @relation(fields: [candidateId], references: [id], onDelete: SetNull)
+  uploadedBy       User?             @relation("UploadedStoredFiles", fields: [uploadedById], references: [id], onDelete: SetNull)
+  artifact         Artifact?
+
+  @@index([organizationId, createdAt])
+  @@index([candidateId, createdAt])
+  @@index([purpose, createdAt])
+}
+
+model BackgroundJob {
+  id           String              @id @default(cuid())
+  organizationId String
+  candidateId  String?
+  requestedById String?
+  jobType      BackgroundJobType
+  status       BackgroundJobStatus @default(PENDING)
+  title        String
+  payloadJson  String
+  resultJson   String?
+  errorMessage String?
+  dedupeKey    String?
+  availableAt  DateTime            @default(now())
+  startedAt    DateTime?
+  finishedAt   DateTime?
+  attemptCount Int                 @default(0)
+  maxAttempts  Int                 @default(3)
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  organization Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  candidate    Candidate?          @relation(fields: [candidateId], references: [id], onDelete: SetNull)
+  requestedBy  User?               @relation("RequestedBackgroundJobs", fields: [requestedById], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, status, availableAt])
+  @@index([candidateId, status])
+  @@index([jobType, status])
+  @@index([dedupeKey])
+}
+
+model OutboundEmail {
+  id                String             @id @default(cuid())
+  candidateId       String
+  sponsorId         String
+  opportunityBriefId String?
+  requestedById     String?
+  draftId           String
+  draftLabel        String
+  subject           String
+  body              String
+  providerMode      EmailSendMode
+  status            EmailDeliveryStatus
+  recipientEmail    String?
+  threadKey         String?
+  providerThreadId  String?
+  externalMessageId String?
+  payloadJson       String
+  sendNote          String
+  sentAt            DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  candidate         Candidate          @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  sponsor           Sponsor            @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
+  opportunityBrief  OpportunityBrief?  @relation(fields: [opportunityBriefId], references: [id], onDelete: SetNull)
+  requestedBy       User?              @relation("RequestedOutboundEmails", fields: [requestedById], references: [id], onDelete: SetNull)
+  events            OutboundEmailEvent[]
+
+  @@index([candidateId, createdAt])
+  @@index([sponsorId, createdAt])
+  @@index([providerMode, status])
+  @@index([threadKey, createdAt])
+}
+
+model OutboundEmailEvent {
+  id              String                 @id @default(cuid())
+  outboundEmailId String
+  actorUserId     String?
+  eventType       OutboundEmailEventType
+  title           String
+  detail          String
+  payloadJson     String?
+  providerEventId String?
+  createdAt       DateTime               @default(now())
+  occurredAt      DateTime               @default(now())
+  outboundEmail   OutboundEmail          @relation(fields: [outboundEmailId], references: [id], onDelete: Cascade)
+  actor           User?                  @relation("OutboundEmailEventActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([outboundEmailId, occurredAt])
+  @@index([eventType, occurredAt])
+}
+
+model SponsorActivity {
+  id                String               @id @default(cuid())
+  candidateId       String
+  sponsorId         String
+  opportunityBriefId String?
+  activityType      SponsorActivityType
+  status            SponsorActivityStatus @default(PENDING)
+  title             String
+  detail            String
+  sourceLabel       String
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  occurredAt        DateTime?
+  completedAt       DateTime?
+  candidate         Candidate            @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  sponsor           Sponsor              @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
+  opportunityBrief  OpportunityBrief?    @relation(fields: [opportunityBriefId], references: [id], onDelete: SetNull)
+
+  @@index([candidateId])
+  @@index([sponsorId])
+  @@index([activityType])
+  @@index([status])
+}
+
+model SponsorOutcome {
+  id             String               @id @default(cuid())
+  organizationId String
+  candidateId    String
+  sponsorId      String
+  pipelineItemId String?
+  recordedById   String?
+  verdict        SponsorOutcomeVerdict
+  outcomeType    SponsorOutcomeType
+  title          String
+  detail         String
+  occurredAt     DateTime
+  recordedAt     DateTime             @default(now())
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
+  organization   Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  candidate      Candidate            @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  sponsor        Sponsor              @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
+  pipelineItem   SponsorPipelineItem? @relation(fields: [pipelineItemId], references: [id], onDelete: SetNull)
+  recordedBy     User?                @relation("RecordedSponsorOutcomes", fields: [recordedById], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, occurredAt])
+  @@index([candidateId, occurredAt])
+  @@index([sponsorId, occurredAt])
+  @@index([pipelineItemId, occurredAt])
+  @@index([verdict, occurredAt])
+}
+
+model CandidateNote {
+  id           String   @id @default(cuid())
+  candidateId   String
+  authorUserId  String?
+  noteType      NoteType @default(GENERAL)
+  title         String?
+  content       String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  candidate     Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  author        User?     @relation("CandidateNoteAuthor", fields: [authorUserId], references: [id], onDelete: SetNull)
+
+  @@index([candidateId, createdAt])
+  @@index([noteType, createdAt])
+}
+
+model CandidateDecision {
+  id             String       @id @default(cuid())
+  candidateId     String
+  decidedById     String?
+  decisionType    DecisionType
+  summary         String
+  rationale       String
+  stageAtDecision CandidateStage?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  candidate       Candidate    @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  decidedBy       User?        @relation("CandidateDecisionAuthor", fields: [decidedById], references: [id], onDelete: SetNull)
+
+  @@index([candidateId, createdAt])
+  @@index([decisionType, createdAt])
+}
+
+model CommitteeReview {
+  id            String                @id @default(cuid())
+  candidateId    String
+  createdById    String?
+  chairUserId    String?
+  status         CommitteeReviewStatus @default(OPEN)
+  finalDecision  CommitteeVoteDecision?
+  title          String
+  summary        String
+  finalNote      String?
+  dueAt          DateTime?
+  finalizedAt    DateTime?
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  candidate      Candidate             @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  createdBy      User?                 @relation("CreatedCommitteeReviews", fields: [createdById], references: [id], onDelete: SetNull)
+  chairUser      User?                 @relation("ChairedCommitteeReviews", fields: [chairUserId], references: [id], onDelete: SetNull)
+  votes          CommitteeReviewVote[]
+
+  @@index([candidateId, createdAt])
+  @@index([status, createdAt])
+}
+
+model CommitteeReviewVote {
+  id                String                @id @default(cuid())
+  committeeReviewId String
+  userId            String
+  decision          CommitteeVoteDecision
+  rationale         String
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  committeeReview   CommitteeReview       @relation(fields: [committeeReviewId], references: [id], onDelete: Cascade)
+  user              User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([committeeReviewId, userId])
+  @@index([committeeReviewId, createdAt])
+  @@index([userId, createdAt])
+}
+
+model SponsorPipelineItem {
+  id                String               @id @default(cuid())
+  candidateId       String
+  sponsorId         String
+  recommendationId  String?
+  opportunityBriefId String?
+  ownerUserId       String?
+  stage             SponsorPipelineStage @default(RECOMMENDED)
+  score             Float                @default(0)
+  rationale         String
+  nextStep          String?
+  outcomeNote       String?
+  nextDueAt         DateTime?
+  lastActivityAt    DateTime?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  candidate         Candidate            @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  sponsor           Sponsor              @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
+  recommendation    Recommendation?      @relation(fields: [recommendationId], references: [id], onDelete: SetNull)
+  opportunityBrief  OpportunityBrief?    @relation(fields: [opportunityBriefId], references: [id], onDelete: SetNull)
+  owner             User?                @relation("PipelineOwner", fields: [ownerUserId], references: [id], onDelete: SetNull)
+  sponsorOutcomes   SponsorOutcome[]
+
+  @@unique([candidateId, sponsorId])
+  @@index([candidateId, stage])
+  @@index([sponsorId, stage])
+  @@index([ownerUserId, stage])
+}
+
+model OperatorTask {
+  id            String       @id @default(cuid())
+  organizationId String
+  candidateId   String?
+  sponsorId     String?
+  sourceAlertId String?      @unique
+  sourceDisagreementReviewId String? @unique
+  sourceProofRequestId String? @unique
+  ownerUserId   String?
+  title         String
+  detail        String
+  status        TaskStatus   @default(OPEN)
+  priority      TaskPriority @default(MEDIUM)
+  dueAt         DateTime?
+  completedAt   DateTime?
+  sourceLabel   String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  organization  Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  candidate     Candidate?   @relation(fields: [candidateId], references: [id], onDelete: SetNull)
+  sponsor       Sponsor?     @relation(fields: [sponsorId], references: [id], onDelete: SetNull)
+  sourceAlert   OperatorAlert? @relation("AlertTask", fields: [sourceAlertId], references: [id], onDelete: SetNull)
+  sourceDisagreementReview DisagreementReview? @relation("DisagreementReviewTask", fields: [sourceDisagreementReviewId], references: [id], onDelete: SetNull)
+  sourceProofRequest ProofRequest? @relation("ProofRequestTask", fields: [sourceProofRequestId], references: [id], onDelete: SetNull)
+  owner         User?        @relation("TaskOwner", fields: [ownerUserId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, status])
+  @@index([ownerUserId, status])
+  @@index([candidateId, status])
+  @@index([dueAt])
+}
+
+model DisagreementReview {
+  id                     String                     @id @default(cuid())
+  candidateId            String
+  assignedUserId         String?
+  reviewedById           String?
+  sourceSystemDecision   UnderwritingDecision
+  sourceHumanDecision    UnderwritingDecision
+  disagreementDirection  DisagreementDirection
+  status                 DisagreementReviewStatus   @default(OPEN)
+  resolutionType         DisagreementResolutionType?
+  autoTriggered          Boolean                   @default(false)
+  riskScore              Int                       @default(0)
+  triggerReason          String?
+  summary                String
+  rationale              String?
+  dueAt                  DateTime?
+  resolvedAt             DateTime?
+  createdAt              DateTime                   @default(now())
+  updatedAt              DateTime                   @updatedAt
+  candidate              Candidate                  @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  assignedUser           User?                      @relation("AssignedDisagreementReviews", fields: [assignedUserId], references: [id], onDelete: SetNull)
+  reviewedBy             User?                      @relation("ReviewedDisagreementReviews", fields: [reviewedById], references: [id], onDelete: SetNull)
+  proofRequests          ProofRequest[]
+  operatorTask           OperatorTask?              @relation("DisagreementReviewTask")
+
+  @@index([candidateId, status])
+  @@index([assignedUserId, status])
+  @@index([dueAt])
+}
+
+model ProofRequest {
+  id                        String             @id @default(cuid())
+  candidateId               String
+  requestedById             String?
+  assignedUserId            String?
+  resolvedById              String?
+  sourceDisagreementReviewId String?
+  requestType               ProofRequestType
+  status                    ProofRequestStatus @default(OPEN)
+  title                     String
+  detail                    String
+  resolutionNote            String?
+  reminderCount             Int                @default(0)
+  lastReminderAt            DateTime?
+  lastReminderNote          String?
+  dueAt                     DateTime?
+  resolvedAt                DateTime?
+  createdAt                 DateTime           @default(now())
+  updatedAt                 DateTime           @updatedAt
+  candidate                 Candidate          @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  requestedBy               User?              @relation("RequestedProofRequests", fields: [requestedById], references: [id], onDelete: SetNull)
+  assignedUser              User?              @relation("AssignedProofRequests", fields: [assignedUserId], references: [id], onDelete: SetNull)
+  resolvedBy                User?              @relation("ResolvedProofRequests", fields: [resolvedById], references: [id], onDelete: SetNull)
+  sourceDisagreementReview  DisagreementReview? @relation(fields: [sourceDisagreementReviewId], references: [id], onDelete: SetNull)
+  operatorTask              OperatorTask?      @relation("ProofRequestTask")
+  candidateUpdates          CandidateUpdate[]
+  candidateUpdateAccessLink CandidateUpdateAccessLink?
+
+  @@index([candidateId, status])
+  @@index([assignedUserId, status])
+  @@index([sourceDisagreementReviewId])
+  @@index([dueAt])
+}
+
+model CandidateUpdate {
+  id                  String                @id @default(cuid())
+  candidateId         String
+  sourceProofRequestId String?
+  submittedByUserId   String?
+  incorporatedById    String?
+  artifactId          String?               @unique
+  status              CandidateUpdateStatus @default(SUBMITTED)
+  title               String
+  summary             String
+  submittedByLabel    String
+  incorporationNote   String?
+  submittedAt         DateTime              @default(now())
+  incorporatedAt      DateTime?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  candidate           Candidate             @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  sourceProofRequest  ProofRequest?         @relation(fields: [sourceProofRequestId], references: [id], onDelete: SetNull)
+  submittedBy         User?                 @relation("SubmittedCandidateUpdates", fields: [submittedByUserId], references: [id], onDelete: SetNull)
+  incorporatedBy      User?                 @relation("IncorporatedCandidateUpdates", fields: [incorporatedById], references: [id], onDelete: SetNull)
+  artifact            Artifact?             @relation(fields: [artifactId], references: [id], onDelete: SetNull)
+
+  @@index([candidateId, status])
+  @@index([sourceProofRequestId])
+  @@index([submittedAt])
+}
+
+model CandidateUpdateAccessLink {
+  id            String                          @id @default(cuid())
+  candidateId   String
+  proofRequestId String                         @unique
+  createdById   String?
+  token         String                          @unique
+  status        CandidateUpdateAccessLinkStatus @default(ACTIVE)
+  expiresAt     DateTime
+  lastUsedAt    DateTime?
+  createdAt     DateTime                        @default(now())
+  updatedAt     DateTime                        @updatedAt
+  candidate     Candidate                       @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  proofRequest  ProofRequest                    @relation(fields: [proofRequestId], references: [id], onDelete: Cascade)
+  createdBy     User?                           @relation("CreatedCandidateUpdateAccessLinks", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([candidateId, status])
+  @@index([expiresAt])
+}
+
+model SavedView {
+  id             String        @id @default(cuid())
+  organizationId String
+  createdById    String?
+  page           SavedViewPage
+  title          String
+  description    String?
+  queryString    String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy      User?         @relation("CreatedSavedViews", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@unique([organizationId, page, title])
+  @@index([organizationId, page, updatedAt])
+}
+
+model PilotMetricSnapshot {
+  id                     String                  @id @default(cuid())
+  organizationId         String
+  capturedById           String?
+  snapshotType           PilotMetricSnapshotType
+  title                  String
+  note                   String?
+  candidateCount         Int                     @default(0)
+  memoReadyCount         Int                     @default(0)
+  sponsorReadyCount      Int                     @default(0)
+  activePipelineCount    Int                     @default(0)
+  openAlertsCount        Int                     @default(0)
+  openTasksCount         Int                     @default(0)
+  knownOutcomeCount      Int                     @default(0)
+  positiveOutcomeCount   Int                     @default(0)
+  disagreementRate       Int                     @default(0)
+  averageReviewMinutes   Int?
+  sampledReviewCount     Int?
+  blindReviewMode        Boolean                 @default(false)
+  strictEvidenceMode     Boolean                 @default(true)
+  requireOutboundApproval Boolean                @default(true)
+  capturedAt             DateTime                @default(now())
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  organization           Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  capturedBy             User?                   @relation("CapturedPilotMetricSnapshots", fields: [capturedById], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, capturedAt])
+  @@index([snapshotType, capturedAt])
+}
+
+model ReviewShareLink {
+  id             String                @id @default(cuid())
+  organizationId String
+  candidateId    String
+  sponsorId      String?
+  createdById    String?
+  linkType       ReviewShareLinkType
+  status         ReviewShareLinkStatus @default(ACTIVE)
+  token          String                @unique
+  title          String
+  payloadJson    String
+  expiresAt      DateTime
+  lastUsedAt     DateTime?
+  revokedAt      DateTime?
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  organization   Organization          @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  candidate      Candidate             @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  sponsor        Sponsor?              @relation(fields: [sponsorId], references: [id], onDelete: SetNull)
+  createdBy      User?                 @relation("CreatedReviewShareLinks", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, candidateId, linkType, status])
+  @@index([expiresAt])
+}
+
+model PilotReviewShareLink {
+  id             String                  @id @default(cuid())
+  organizationId String
+  createdById    String?
+  linkType       PilotReviewShareLinkType
+  status         ReviewShareLinkStatus   @default(ACTIVE)
+  token          String                  @unique
+  title          String
+  payloadJson    String
+  expiresAt      DateTime
+  lastUsedAt     DateTime?
+  revokedAt      DateTime?
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+  organization   Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy      User?                   @relation("CreatedPilotReviewShareLinks", fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, linkType, status])
+  @@index([expiresAt])
+}
+
+model OutboundApproval {
+  id                String               @id @default(cuid())
+  candidateId       String
+  sponsorId         String
+  opportunityBriefId String?
+  requestedById     String?
+  reviewedById      String?
+  approvalType      OutboundApprovalType
+  status            OutboundApprovalStatus @default(PENDING)
+  title             String
+  rationale         String
+  decisionNote      String?
+  reviewedAt        DateTime?
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  candidate         Candidate            @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  sponsor           Sponsor              @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
+  opportunityBrief  OpportunityBrief?    @relation(fields: [opportunityBriefId], references: [id], onDelete: SetNull)
+  requestedBy       User?                @relation("RequestedOutboundApprovals", fields: [requestedById], references: [id], onDelete: SetNull)
+  reviewedBy        User?                @relation("ReviewedOutboundApprovals", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@unique([candidateId, sponsorId, approvalType])
+  @@index([candidateId, status])
+  @@index([sponsorId, status])
+  @@index([approvalType, status])
+}
+
+model AppSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id             String             @id @default(cuid())
+  organizationId String
+  candidateId    String?
+  sponsorId      String?
+  actorUserId    String?
+  targetType     AuditLogTargetType
+  action         String
+  title          String
+  detail         String
+  payloadJson    String?
+  createdAt      DateTime           @default(now())
+  organization   Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  candidate      Candidate?         @relation(fields: [candidateId], references: [id], onDelete: SetNull)
+  sponsor        Sponsor?           @relation(fields: [sponsorId], references: [id], onDelete: SetNull)
+  actor          User?              @relation("AuditLogActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt])
+  @@index([candidateId, createdAt])
+  @@index([sponsorId, createdAt])
+  @@index([targetType, createdAt])
+}
+
+model OperatorAlert {
+  id            String            @id @default(cuid())
+  candidateId    String
+  assignedUserId String?
+  dueAt          DateTime?
+  resolvedById   String?
+  resolutionNote String?
+  alertType      OperatorAlertType
+  severity       AlertSeverity
+  status         AlertStatus       @default(OPEN)
+  title          String
+  detail         String
+  sourceLabel    String
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  resolvedAt     DateTime?
+  candidate      Candidate         @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  assignedUser   User?             @relation("AssignedAlerts", fields: [assignedUserId], references: [id], onDelete: SetNull)
+  resolvedBy     User?             @relation("ResolvedAlerts", fields: [resolvedById], references: [id], onDelete: SetNull)
+  operatorTask   OperatorTask?     @relation("AlertTask")
+
+  @@index([candidateId, status])
+  @@index([assignedUserId, status])
+  @@index([alertType, status])
+  @@index([createdAt])
+}
+
+model CandidateStageEvent {
+  id         String          @id @default(cuid())
+  candidateId String
+  eventType  StageEventType
+  fromStage  CandidateStage?
+  toStage    CandidateStage?
+  rationale  String
+  actorLabel String?
+  createdAt  DateTime        @default(now())
+  candidate  Candidate       @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@index([candidateId, createdAt])
+  @@index([eventType, createdAt])
+}
+
+model AlertDigestDelivery {
+  id        String              @id @default(cuid())
+  channel   NotificationChannel
+  status    DeliveryStatus      @default(SENT)
+  title     String
+  summary   String
+  alertCount Int                @default(0)
+  payloadJson String
+  sourceLabel String
+  createdAt DateTime            @default(now())
+  deliveredAt DateTime?
+
+  @@index([channel, createdAt])
+  @@index([createdAt])
+}
